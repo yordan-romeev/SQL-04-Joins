@@ -100,3 +100,21 @@ FROM Employees AS e
     JOIN OrderDetails AS od ON od.OrderID = o.OrderID
     JOIN Products AS p ON p.ProductID = od.ProductID
 GROUP BY e.FirstName, e.LastName
+
+-- ### 13. List of Products That Have Never Been Ordered
+-- Write a query to find all `ProductName` entries that are not present in the `OrderDetails` table. Use the `Products` and `OrderDetails` tables.
+
+SELECT p.ProductName
+FROM Products AS p
+    JOIN OrderDetails AS od ON od.ProductID = p.ProductID
+WHERE p.ProductID NOT IN (SELECT DISTINCT ProductID
+FROM OrderDetails)
+
+-- ### 14. List All Orders Shipped by a Specific Shipper
+-- Write a query to display all `OrderID`, `OrderDate`, and `CustomerName` entries where the order was shipped by a specific `ShipperName`. Use the `Orders`, `Customers`, and `Shippers` tables.
+
+SELECT o.OrderID, o.OrderDate, c.CustomerName
+FROM Orders AS o
+    JOIN Customers AS c ON c.CustomerID = o.CustomerID
+    JOIN Shippers AS s ON s.ShipperID = o.ShipperID
+WHERE s.ShipperName = 'Speedy Express'
