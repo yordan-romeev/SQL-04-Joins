@@ -28,3 +28,21 @@ FROM Orders AS o
 SELECT p.ProductName, c.CategoryName, p.Price
 FROM Products p
     JOIN Categories c ON p.CategoryID = c.CategoryID
+
+
+-- ### 5. Supplier and Product List with Quantities Available
+-- Write a query to list the `SupplierName`, `ProductName`, and `Price` of products available. Use the `Suppliers` and `Products` tables.
+
+SELECT s.SupplierName, p.ProductName, p.Price
+FROM Suppliers  AS s
+    JOIN Products AS p ON s.SupplierID = p.SupplierID
+
+-- ### 6. Orders with Total Quantity and Total Price
+-- Write a query to display the `OrderID`, `CustomerName`, total `Quantity`, and the total price of all products in the order. Use the `Orders`, `OrderDetails`, and `Customers` tables. Group by `OrderID`.
+
+SELECT o.OrderID, c.CustomerName, SUM(od.Quantity) AS TotalQuantity, SUM(od.Quantity * p.price) AS TotalPrice
+FROM Orders AS o
+    JOIN OrderDetails AS od ON o.OrderID = od.OrderID
+    JOIN Customers AS c ON c.CustomerID = o.CustomerID
+    JOIN Products AS p ON od.ProductID = p.ProductID
+GROUP BY o.OrderID, c.CustomerName
