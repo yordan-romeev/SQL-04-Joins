@@ -118,3 +118,22 @@ FROM Orders AS o
     JOIN Customers AS c ON c.CustomerID = o.CustomerID
     JOIN Shippers AS s ON s.ShipperID = o.ShipperID
 WHERE s.ShipperName = 'Speedy Express'
+
+-- ### 15. Find Customers Who Have Placed Orders in a Specific Month
+-- Write a query to list all `CustomerName` and `OrderID` entries where the `OrderDate` falls within a specific month. Use the `Orders` and `Customers` tables.
+
+SELECT c.CustomerName, o.OrderID, o.OrderDate
+FROM Orders AS o
+    JOIN Customers AS c ON c.CustomerID = o.CustomerID
+WHERE o.OrderDate LIKE '%-07-%'
+
+-- ### 16. Products with Prices Higher Than the Average Price per Category
+-- Write a query to display all `ProductName` and `Price` entries where the price is higher than the average price for that product's category. Use the `Products` and `Categories` tables.
+
+SELECT p.ProductName, p.Price --, p.CategoryID, AverageCategoryPrice
+FROM Products AS p
+    JOIN (Select CategoryID, AVG(Price) AS AverageCategoryPrice
+    FROM Products
+    GROUP BY CategoryID) AS cAvg
+    ON cAvg.CategoryID = p.CategoryID
+WHERE p.Price > AverageCategoryPrice
