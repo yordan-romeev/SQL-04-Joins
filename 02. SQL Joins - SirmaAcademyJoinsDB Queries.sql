@@ -149,3 +149,21 @@ FROM Orders AS o
 GROUP BY o.OrderID
 HAVING COUNT(DISTINCT c.CategoryID) > 1
 
+-- ### 18. Customers and Employees Linked by Orders
+-- Write a query to display the `CustomerName`, `EmployeeName` (both `FirstName` and `LastName`), and `OrderID` for all orders. Use the `Orders`, `Customers`, and `Employees` tables.
+
+SELECT c.CustomerName, e.FirstName + ' ' + e.LastName AS EmployeeName, o.OrderID
+FROM Orders AS o
+    JOIN Employees AS e ON e.EmployeeID = o.EmployeeID
+    JOIN Customers AS c ON c.CustomerID = o.CustomerID
+
+-- ### 19. Suppliers That Provide Products Ordered by a Specific Customer
+-- Write a query to find the `SupplierName` and `ProductName` for products ordered by a specific `CustomerName`. Use the `Orders`, `OrderDetails`, `Products`, `Customers`, and `Suppliers` tables.
+
+SELECT s.SupplierName, p.ProductName
+FROM Orders AS o
+    JOIN OrderDetails AS od ON od.OrderID = o.OrderID
+    JOIN Products AS p ON p.ProductID = od.ProductID
+    JOIN Customers AS c ON c.CustomerID = o.CustomerID
+    JOIN Suppliers as s ON s.SupplierID = p.SupplierID
+WHERE c.CustomerName = 'Ana Trujillo Emparedados y helados'
