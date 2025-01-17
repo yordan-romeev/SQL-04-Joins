@@ -46,3 +46,20 @@ FROM Orders AS o
     JOIN Customers AS c ON c.CustomerID = o.CustomerID
     JOIN Products AS p ON od.ProductID = p.ProductID
 GROUP BY o.OrderID, c.CustomerName
+
+-- ### 7. Products Ordered by Customer Names
+-- Write a query to display the `CustomerName`, `ProductName`, and `Quantity` for all orders. Use the `Orders`, `OrderDetails`, `Customers`, and `Products` tables.
+
+SELECT c.CustomerName, p.ProductName, od.Quantity
+FROM Orders AS o
+    JOIN OrderDetails AS od ON o.OrderID = od.OrderID
+    JOIN Customers AS c ON c.CustomerID = o.CustomerID
+    JOIN Products AS p ON od.ProductID = p.ProductID
+
+-- ### 8. Shipped Orders with Shipper and Employee Names
+-- Write a query to display the `OrderID`, `OrderDate`, `ShipperName`, and the employee's `FirstName` and `LastName` who processed the shipping. Use the `Orders`, `Shippers`, and `Employees` tables.
+
+SELECT o.OrderID, OrderDate, s.ShipperName, e.FirstName, e.LastName
+FROM Orders AS o
+JOIN Shippers AS s ON s.ShipperID = o.ShipperID
+JOIN Employees AS e ON e.EmployeeID = o.EmployeeID
