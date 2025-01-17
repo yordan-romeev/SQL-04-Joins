@@ -63,3 +63,23 @@ SELECT o.OrderID, OrderDate, s.ShipperName, e.FirstName, e.LastName
 FROM Orders AS o
 JOIN Shippers AS s ON s.ShipperID = o.ShipperID
 JOIN Employees AS e ON e.EmployeeID = o.EmployeeID
+
+-- ### 9. Orders by Category with Total Quantities
+-- Write a query to display the `OrderID`, `CategoryName`, and total `Quantity` of products ordered in each category. Use the `Orders`, `OrderDetails`, `Products`, and `Categories` tables. Group by `CategoryName`.
+SELECT o.OrderID, cg.CategoryName, SUM(od.Quantity) AS TotalQuantity
+FROM Orders AS o
+    JOIN OrderDetails AS od ON o.OrderID = od.OrderID
+    JOIN Products AS p ON od.ProductID = p.ProductID
+    JOIN Categories AS cg ON cg.CategoryID = p.CategoryID
+GROUP BY o.OrderID, cg.CategoryName
+
+-- ### 10. Customers Who Ordered Specific Products
+-- Write a query to find all `CustomerName` and `OrderID` entries for a specific `ProductName`. Use the `Orders`, `OrderDetails`, `Products`, and `Customers` tables.
+
+SELECT c.CustomerName, o.OrderID
+FROM Orders AS o
+JOIN OrderDetails AS od ON od.OrderID = o.OrderID
+JOIN Products AS p ON p.ProductID = od.ProductID
+JOIN Customers AS c ON c.CustomerID = o.CustomerID
+WHERE p.ProductName = 'Chocolade'
+
