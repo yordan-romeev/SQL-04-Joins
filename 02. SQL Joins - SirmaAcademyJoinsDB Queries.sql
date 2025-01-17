@@ -130,10 +130,22 @@ WHERE o.OrderDate LIKE '%-07-%'
 -- ### 16. Products with Prices Higher Than the Average Price per Category
 -- Write a query to display all `ProductName` and `Price` entries where the price is higher than the average price for that product's category. Use the `Products` and `Categories` tables.
 
-SELECT p.ProductName, p.Price --, p.CategoryID, AverageCategoryPrice
+SELECT p.ProductName, p.Price, cAvg.AverageCategoryPrice
 FROM Products AS p
     JOIN (Select CategoryID, AVG(Price) AS AverageCategoryPrice
     FROM Products
     GROUP BY CategoryID) AS cAvg
     ON cAvg.CategoryID = p.CategoryID
 WHERE p.Price > AverageCategoryPrice
+
+-- ### 17. Orders Containing Products from Multiple Categories
+-- Write a query to find all `OrderID` entries that contain products from more than one category. Use the `Orders`, `OrderDetails`, `Products`, and `Categories` tables.
+
+SELECT o.OrderID , COUNT(DISTINCT c.CategoryID) AS CategoriesCount
+FROM Orders AS o
+    JOIN OrderDetails AS od ON od.OrderID = o.OrderID
+    JOIN Products AS p ON p.ProductID = od.ProductID
+    JOIN Categories AS c ON c.CategoryID = p.CategoryID
+GROUP BY o.OrderID
+HAVING COUNT(DISTINCT c.CategoryID) > 1
+
